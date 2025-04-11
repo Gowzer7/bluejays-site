@@ -69,3 +69,5 @@ const PlayerCard = ({ name }) => {
 };
 
 export default PlayerCard;
+
+fetch(`https://your-railway-app.up.railway.app/api/mlb/player/${name}/career`)
