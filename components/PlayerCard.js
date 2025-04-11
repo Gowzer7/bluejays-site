@@ -10,11 +10,11 @@ const PlayerCard = ({ name }) => {
   const [games, setGames] = useState([]);
 
   useEffect(() => {
-    fetch(bluejays-backend-production.up.railway.app↗/${name}/career`)
+    fetch(bluejays-backend-production.up.railway.app/${name}/career`)
       .then(res => res.json())
       .then(setCareer);
 
-    fetch(bluejays-backend-production.up.railway.app↗/${name}/gamelogs`)
+    fetch(bluejays-backend-production.up.railway.app/${name}/gamelogs`)
       .then(res => res.json())
       .then(setGames);
   }, [name]);
