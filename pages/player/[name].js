@@ -1,56 +1,87 @@
 import { useRouter } from 'next/router';
 import Layout from '../../components/Layout';
 import { useEffect, useState } from 'react';
+import {
+  LineChart, Line,
+  BarChart, Bar,
+  XAxis, YAxis, Tooltip, ResponsiveContainer, Legend
+} from 'recharts';
 
 export default function PlayerPage() {
-  const router = useRouter();
-  const { name } = router.query;
+  const { query } = useRouter();
+  const name = query.name;
 
   const [career, setCareer] = useState(null);
   const [games, setGames] = useState([]);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (!name) return;
 
     async function fetchData() {
-      try {
-        const careerRes = await fetch(`https://bluejays-backend-production.up.railway.app/api/mlb/player/${name}/career`);
-        const gamesRes = await fetch(`https://bluejays-backend-production.up.railway.app/api/mlb/player/${name}/gamelogs`);
-        const careerData = await careerRes.json();
-        const gamesData = await gamesRes.json();
-
-        setCareer(careerData);
-        setGames(gamesData);
-        setLoading(false);
-      } catch (err) {
-        console.error("Error loading player data:", err);
-        setLoading(false);
-      }
+      const careerRes = await fetch(`https://bluejays-backend-production.up.railway.app/api/mlb/player/${name}/career`);
+      const gamesRes = await fetch(`https://bluejays-backend-production.up.railway.app/api/mlb/player/${name}/gamelogs`);
+      const careerData = await careerRes.json();
+      const gamesData = await gamesRes.json();
+      setCareer(careerData);
+      setGames(gamesData);
     }
 
     fetchData();
   }, [name]);
 
-  if (loading) return <Layout><p>Loading {name}...</p></Layout>;
-  if (!career || !games || games.length === 0) return <Layout><p>No data for {name}</p></Layout>;
+  if (!career || games.length === 0) {
+    return <Layout><p className="text-gray-400">Loading {name}...</p></Layout>;
+  }
 
   return (
     <Layout>
-      <h2 className="text-2xl font-bold mb-4">{name}</h2>
+      <h1 className="text-3xl font-bold mb-6">{name}</h1>
 
-      <div className="bg-white p-4 rounded-md border shadow-sm mb-6">
-        <h4 className="text-sm text-gray-500 mb-2">Career Stats</h4>
-        <ul>
-          <li><strong>AVG:</strong> {career.AVG}</li>
-          <li><strong>OPS:</strong> {career.OPS}</li>
-          <li><strong>HR:</strong> {career.HR}</li>
-          <li><strong>RBI:</strong> {career.RBI}</li>
-        </ul>
+      {/* AVG Line Chart */}
+      <div className="mb-8 bg-[#161b22] p-4 rounded-lg shadow-md">
+        <h3 className="text-xl font-semibold mb-2">2024 Game-by-Game AVG</h3>
+        <ResponsiveContainer width="100%" height={200}>
+          <LineChart data={games}>
+            <XAxis dataKey="date" />
+            <YAxis domain={[0, 0.400]} />
+            <Tooltip />
+            <Line type="monotone" dataKey="AVG" stroke="#60a5fa" />
+          </LineChart>
+        </ResponsiveContainer>
       </div>
 
-      <div>
-        <h4 className="text-sm text-gray-500 mb-2">2024 Game Logs Coming Soon...</h4>
+      {/* OPS Comparison */}
+      <div className="mb-8 bg-[#161b22] p-4 rounded-lg shadow-md">
+        <h3 className="text-xl font-semibold mb-2">OPS: Career vs 2024</h3>
+        <ResponsiveContainer width="100%" height={200}>
+          <BarChart data={[
+            { label: 'Career OPS', value: career.OPS },
+            { label: '2024 OPS', value: games[games.length - 1]?.OPS || 0 },
+          ]}>
+            <XAxis dataKey="label" />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            <Bar dataKey="value" fill="#10b981" />
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
+
+      {/* HR Comparison */}
+      <div className="mb-8 bg-[#161b22] p-4 rounded-lg shadow-md">
+        <h3 className="text-xl font-semibold mb-2">HR: Career vs 2024</h3>
+        <ResponsiveContainer width="100%" height={200}>
+          <BarChart data={[
+            { label: 'Career HR', value: career.HR },
+            { label: '2024 HR', value: games[games.length - 1]?.HR || 0 },
+          ]}>
+            <XAxis dataKey="label" />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            <Bar dataKey="value" fill="#f97316" />
+          </BarChart>
+        </ResponsiveContainer>
       </div>
     </Layout>
   );
