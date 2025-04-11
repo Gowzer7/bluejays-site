@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { SpeedInsights } from "@vercel/speed-insights/next"
 import Link from 'next/link';
 
 const players = [
