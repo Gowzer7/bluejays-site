@@ -5,9 +5,25 @@ import {
   XAxis, YAxis, Tooltip, ResponsiveContainer, Legend
 } from 'recharts';
 
+// 🧠 STEP 1: Player name → playerId mapping
+const playerPhotos = {
+  "Bo Bichette": 665489,
+  "Vladimir Guerrero Jr.": 665543,
+  "George Springer": 592663,
+  "Cavan Biggio": 624415,
+  "Daulton Varsho": 669387,
+  // Add more as needed
+};
+
 const PlayerCard = ({ name }) => {
   const [career, setCareer] = useState(null);
   const [games, setGames] = useState([]);
+
+  // 🧠 STEP 2: Generate player headshot URL
+  const playerId = playerPhotos[name];
+  const headshotUrl = playerId
+    ? `https://img.mlbstatic.com/mlb-photos/image/upload/v1/people/${playerId}/headshot/67/current.jpg`
+    : null;
 
   useEffect(() => {
     fetch(`https://bluejays-backend-production.up.railway.app/api/mlb/player/${name}/career`)
@@ -21,7 +37,7 @@ const PlayerCard = ({ name }) => {
 
   if (!career || games.length === 0) {
     return (
-      <div className="border p-4 rounded-md shadow bg-gray-100 text-center text-gray-500">
+      <div className="border border-gray-300 p-4 rounded-md shadow-sm mb-6 bg-white">
         <p>Loading {name}...</p>
       </div>
     );
@@ -33,9 +49,18 @@ const PlayerCard = ({ name }) => {
     { label: "Career RBI", value: career.RBI },
   ];
 
+  // ✅ STEP 3: Render full card with image
   return (
     <Link href={`/player/${encodeURIComponent(name)}`}>
       <span className="block border border-gray-200 rounded-lg p-4 bg-white shadow-sm hover:shadow-md transition-shadow duration-200 cursor-pointer">
+        {headshotUrl && (
+          <img
+            src={headshotUrl}
+            alt={`${name} headshot`}
+            className="w-20 h-20 rounded-full object-cover mb-3 border border-gray-300"
+          />
+        )}
+
         <h2 className="text-lg font-semibold text-blue-800 mb-2">{name}</h2>
 
         <div className="mb-4">
