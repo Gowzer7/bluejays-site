@@ -10,11 +10,11 @@ const PlayerCard = ({ name }) => {
   const [games, setGames] = useState([]);
 
   useEffect(() => {
-    fetch(`http://localhost:8000/api/mlb/player/${name}/career`)
+    fetch(bluejays-backend-production.up.railway.app↗/${name}/career`)
       .then(res => res.json())
       .then(setCareer);
 
-    fetch(`http://localhost:8000/api/mlb/player/${name}/gamelogs`)
+    fetch(bluejays-backend-production.up.railway.app↗/${name}/gamelogs`)
       .then(res => res.json())
       .then(setGames);
   }, [name]);
@@ -70,4 +70,4 @@ const PlayerCard = ({ name }) => {
 
 export default PlayerCard;
 
-fetch(`https://your-railway-app.up.railway.app/api/mlb/player/${name}/career`)
+
