@@ -19,7 +19,13 @@ const PlayerCard = ({ name }) => {
       .then(setGames);
   }, [name]);
 
-  if (!career || games.length === 0) return <p>Loading {name}...</p>;
+  if (!career || games.length === 0) {
+    return (
+      <div className="border p-4 rounded-md shadow bg-gray-100 text-center text-gray-500">
+        <p>Loading {name}...</p>
+      </div>
+    );
+  }
 
   const compareStats = [
     { label: "Career AVG", value: career.AVG },
@@ -27,7 +33,7 @@ const PlayerCard = ({ name }) => {
     { label: "Career RBI", value: career.RBI },
   ];
 
-   return (
+  return (
     <Link href={`/player/${encodeURIComponent(name)}`}>
       <span className="block border border-gray-200 rounded-lg p-4 bg-white shadow-sm hover:shadow-md transition-shadow duration-200 cursor-pointer">
         <h2 className="text-lg font-semibold text-blue-800 mb-2">{name}</h2>
