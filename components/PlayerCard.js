@@ -28,22 +28,13 @@ const PlayerCard = ({ name }) => {
   ];
 
   return (
-    <Link href={`/player/${encodeURIComponent(name)}`}>
-      <span style={{
-        display: 'block',
-        border: '1px solid #ccc',
-        padding: '1rem',
-        marginBottom: '2rem',
-        borderRadius: '8px',
-        boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-        background: '#fdfdfd',
-        transition: 'box-shadow 0.3s ease',
-        cursor: 'pointer'
-      }}>
-        <h2 style={{ fontSize: '20px', marginBottom: '8px' }}>{name}</h2>
+  <Link href={`/player/${encodeURIComponent(name)}`}>
+    <span className="block border border-gray-200 rounded-lg p-4 bg-white shadow-sm hover:shadow-md transition-shadow duration-200 cursor-pointer">
+      <h2 className="text-lg font-semibold text-blue-800 mb-2">{name}</h2>
 
-        <h4>Career Summary</h4>
-        <ResponsiveContainer width="100%" height={200}>
+      <div className="mb-4">
+        <h4 className="text-sm text-gray-500 font-medium mb-1">Career Summary</h4>
+        <ResponsiveContainer width="100%" height={180}>
           <BarChart data={compareStats}>
             <XAxis dataKey="label" />
             <YAxis />
@@ -52,9 +43,11 @@ const PlayerCard = ({ name }) => {
             <Bar dataKey="value" fill="#1976d2" />
           </BarChart>
         </ResponsiveContainer>
+      </div>
 
-        <h4>2024 Game-by-Game AVG</h4>
-        <ResponsiveContainer width="100%" height={200}>
+      <div>
+        <h4 className="text-sm text-gray-500 font-medium mb-1">2024 Game-by-Game AVG</h4>
+        <ResponsiveContainer width="100%" height={180}>
           <LineChart data={games}>
             <XAxis dataKey="date" />
             <YAxis domain={[0, 0.400]} />
@@ -62,9 +55,10 @@ const PlayerCard = ({ name }) => {
             <Line type="monotone" dataKey="AVG" stroke="#d32f2f" />
           </LineChart>
         </ResponsiveContainer>
-      </span>
-    </Link>
-  );
-};
+      </div>
+    </span>
+  </Link>
+);
+
 
 export default PlayerCard;
