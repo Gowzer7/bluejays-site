@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Custom body style */
+/* Apply dark theme globally */
 body {
   @apply bg-jaysDark text-textLight font-sans;
 }
