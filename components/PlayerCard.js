@@ -29,7 +29,6 @@ const PlayerCard = ({ name }) => {
 
   return (
     <Link href={`/player/${encodeURIComponent(name)}`}>
-      {/* span replaces div to fix SSR error */}
       <span style={{
         display: 'block',
         border: '1px solid #ccc',
