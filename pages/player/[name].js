@@ -15,8 +15,8 @@ export default function PlayerPage() {
 
     async function fetchData() {
       try {
-        const careerRes = await fetch(`http://localhost:8000/api/mlb/player/${name}/career`);
-        const gamesRes = await fetch(`http://localhost:8000/api/mlb/player/${name}/gamelogs`);
+        const careerRes = await fetch(`https://bluejays-backend-production.up.railway.app/api/mlb/player/${name}/career`);
+        const gamesRes = await fetch(`https://bluejays-backend-production.up.railway.app/api/mlb/player/${name}/gamelogs`);
         const careerData = await careerRes.json();
         const gamesData = await gamesRes.json();
 
